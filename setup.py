@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 setup(
     name="JupyterDebug",
     version="0.1.0",
-    author="Your Name",
+    author="Ethan",
     author_email="your.email@example.com",
     description="A package for debugging Jupyter notebooks using OpenAI.",
     long_description=open("README.md").read(),

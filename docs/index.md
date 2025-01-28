@@ -72,6 +72,17 @@ pip install JupyterDebug
    jd.debug(max_iter=2)
    ```
 
+3. **Revise Your Code**:
+   ```python
+   # Cell 1: Code with an error
+   x = 10
+   y = 20
+   z = x + y
+
+   # Cell 2: Debug the error
+   jd.revise("Please add comments to this code.")
+   ```
+
 ---
 
 ## Documentation

@@ -11,7 +11,7 @@ import getpass
 from IPython.display import display
 import ipywidgets as widgets
 
-from JupyterDebug.utils import get_code_and_error_trace, debug_code, debug_all, paste_code
+from JupyterDebug.utils import get_code_and_error_trace, debug_code, debug_all, paste_code, get_code, revise_code
 
 def init(api_key=None, model='gpt-4o-mini'):
     """
@@ -102,4 +102,14 @@ def debug(max_iter = 1):
   code = debug_code(previous_cell_code, error_trace)
   if max_iter > 1:
     code = debug_all(code, max_iter - 1)
+  paste_code(code)    
+
+def revise(prompt = "Please add comments to this code."):
+  try:
+    api_key = os.environ["OPENAI_API_KEY"]
+  except:
+    raise ValueError("OpenAI API Key not set, run 'jd.init()' first, then try again.")
+
+  previous_cell_code = get_code()
+  code = revise_code(previous_cell_code, prompt)
   paste_code(code)

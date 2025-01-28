@@ -19,6 +19,19 @@ def in_colab():
   except:
     return False
 
+def get_code():
+  # Get the code from the previous cell
+  ip = get_ipython()
+  if ip is not None:
+    # Running in a Jupyter notebook
+    if hasattr(ip, 'history_manager') and hasattr(ip.history_manager, 'input_hist_raw'):
+        # Access the input history
+        ih = ip.history_manager.input_hist_raw
+
+        previous_cell_code = ih[-2]  # _ih is an alias for In, and -2 refers to the previous cell
+
+  return previous_cell_code
+
 def get_code_and_error_trace():
   # Get the code from the previous cell
   ip = get_ipython()
@@ -52,6 +65,31 @@ def debug_code(code_str, error_trace):
             Error trace: {error_trace}\n\n\
             Instructions:\n\
             1. Return only the Python code with the error fixed enclosed in ``` ``` tags.\n\
+            2. Do not return anything besides the delimited Python code."
+
+  debugger_completion = debugger.chat.completions.create(
+      model=os.environ["JUPYTERDEBUG_MODEL"],
+      messages=[
+          {"role": "developer", "content": f"{debugger_role}"},
+          {
+              "role": "user",
+              "content": f"{debugger_prompt}"
+          }
+      ]
+  )
+
+  code = get_out_code(debugger_completion.choices[0].message.content)
+
+  return code
+
+def revise_code(code_str, prompt):
+  debugger = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
+  debugger_role = "You are a helpful assistant tasked with revising Python code."
+  debugger_prompt = f"Please help revising this Python code. The code and requested revision are provided below, enclosed in ``` ``` tags as follows:  \n\
+            Code: {code_str}\n\n\
+            Error trace: {prompt}\n\n\
+            Instructions:\n\
+            1. Return only the revised Python code enclosed in ``` ``` tags.\n\
             2. Do not return anything besides the delimited Python code."
 
   debugger_completion = debugger.chat.completions.create(

@@ -1,3 +1,3 @@
 # __init__.py
-from .core import init, debug
-__all__ = ["init", "debug"]
+from .core import init, debug, revise
+__all__ = ["init", "debug", "revise"]

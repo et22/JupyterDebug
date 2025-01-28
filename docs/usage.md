@@ -59,6 +59,33 @@ jd.debug(max_iter=2)
 
 ---
 
+---
+
+## Revising Code
+
+The `revise(prompt)` function automatically revises the code in the previous cell by calling the selected language model iteratively to implement the revision specified by the prompt.
+
+### Syntax
+```python
+jd.revise(prompt="Please add comments to the code.")
+```
+
+### Parameters
+- **`prompt`** (optional, default="Please add comments to this code."): The instruction the language model receives for revising the code. 
+
+### Example
+```python
+# Cell 1: Code 
+x = 10
+y = 20
+z = x + y  
+
+# Cell 2: Revise this code
+jd.revise(prompt="Please add comments to the code.")
+```
+
+---
+
 ## Troubleshooting
 
 ### Common Issues
